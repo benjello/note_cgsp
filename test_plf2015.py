@@ -54,23 +54,37 @@ def test_plf15_reform():
 #    import os
 #    with open(os.path.join(os.path.dirname(__file__), 'reference_legislation.json'), 'w') as json_file:
 #        json.dump(reference_legislation_json, json_file, indent = 4)
-
-    return
     reform_legislation_json = reforms.update_legislation(
         legislation_json = reference_legislation_json,
-        path = ('children', 'ir', 'children', 'bareme', 'slices', 0, 'rate'),
+        path = ('children', 'ir', 'children', 'bareme', 'slices', 1, 'rate'),
         period = simulation_period,
-        value = 1,
+        value = 0,
+        path = ('children', 'ir', 'children', 'bareme', 'slices', 1, 'threshold'),
+        period = simulation_period,
+        value = 9690,        
+        path = ('children', 'ir', 'children', 'bareme', 'slices', 2, 'threshold'),
+        period = simulation_period,
+        value = 12051,
+        path = ('children', 'ir', 'children', 'bareme', 'slices', 3, 'threshold'),
+        period = simulation_period,
+        value = 26764,
+        path = ('children', 'ir', 'children', 'bareme', 'slices', 4, 'threshold'),
+        period = simulation_period,
+        value = 71754,
+        path = ('children', 'ir', 'children', 'bareme', 'slices', 5, 'threshold'),
+        period = simulation_period,
+        value = 151956,              
         )
 
     reform = reforms.Reform(
-        name = u'IR_100_tranche_1',
-        label = u"Imposition à 100% dès le premier euro et jusqu'à la fin de la 1ère tranche",
+        name = u'IR_suppression_tranche_1',
+        label = u"PLF 2015 suppression première tranche",
         legislation_json = reform_legislation_json,
         reference_legislation_json = reference_legislation_json
         )
 
-    scenario = tax_benefit_system.new_scenario().init_single_entity(
+
+     scenario = tax_benefit_system.new_scenario().init_single_entity(
         axes = [
             dict(
                 count = 3,
@@ -89,7 +103,8 @@ def test_plf15_reform():
     reform_simulation = reform.new_simulation(debug = True, scenario = scenario)
     assert_less(max(abs(reform_simulation.calculate('impo') - [0., -13900.20019531, -29446.52929688])), .0001)
 
-   
+
+
    
    
 if __name__ == '__main__':
