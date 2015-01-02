@@ -33,7 +33,7 @@ import matplotlib.pyplot as plt
 
 from openfisca_core import periods
 from openfisca_france.tests import base
-from openfisca_qt.matplotlib import graphs
+from openfisca_matplotlib import graphs
 
 
 def celibataire(year):
