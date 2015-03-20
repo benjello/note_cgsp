@@ -1,4 +1,4 @@
-./cgsp_scripts/figures/*.png
+./openfisca_cgsp/cgsp_scripts/figures/*.png
 *~
 *.egg-info
 *.mo
