@@ -33,25 +33,22 @@ from numpy import logical_not as not_, minimum as min_
 import logging
 
 from openfisca_core import columns, formulas, reforms
-from .. import entities
-from ..model import base
-from ..model.prelevements_obligatoires.impot_revenu import charges_deductibles # TODO credit impot pour PPE
-
+from openfisca_france import entities
+from openfisca_france.model import base
+from openfisca_france.model.prelevements_obligatoires.impot_revenu import ir
 
 log = logging.getLogger(__name__)
 
 
 class ppe(formulas.SimpleFormulaColumn):
     label = u"PPE annulée"
-    reference = charges_deductibles.charges_deduc
+    reference = ir.ppe
 
     def function(self, simulation, period):
         period = period.start.offset('first-of', 'year').period('year')
         cd1 = simulation.calculate('cd1', period)
-        cd2 = simulation.calculate('cd2', period)
-        charge_loyer = simulation.calculate('charge_loyer', period)
 
-        return period, cd1 + cd2 + charge_loyer
+        return period, cd1 * 0
 
 
 class charge_loyer(formulas.SimpleFormulaColumn):
@@ -113,7 +110,7 @@ def build_reform(tax_benefit_system):
     Reform = reforms.make_reform(
         legislation_json = reform_legislation_json,
         name = u'Loyer comme charge déductible (Trannoy-Wasmer)',
-        new_formulas = (charges_deduc, charge_loyer),
+        new_formulas = (ppe, charge_loyer),
         reference = tax_benefit_system,
         )
     return Reform()

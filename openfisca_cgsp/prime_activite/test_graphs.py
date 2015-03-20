@@ -30,12 +30,14 @@ import sys
 
 from PyQt4.Qt import QMainWindow, QApplication
 
-from openfisca_core import periods, reforms
+from openfisca_core import periods
 import openfisca_france
 from openfisca_matplotlib.widgets.matplotlibwidget import MatplotlibWidget
 from openfisca_matplotlib import graphs
 
-from note_cgsp.prime_activite import prime_activite
+
+from openfisca_cgsp.prime_activite import prime_activite
+
 
 TaxBenefitSystem = openfisca_france.init_country()
 tax_benefit_system = TaxBenefitSystem()
@@ -81,7 +83,7 @@ def bareme():
     graphs.draw_bareme(
         simulation = reform_simulation,
         axes = axes,
-        x_axis = 'salaire_de_base',
+        x_axis = 'salbrut',
         visible_lines = ['revdisp'])
     win.resize(1400, 700)
     win.mplwidget.draw()
@@ -130,7 +132,7 @@ def create_simulation(year = 2014, bareme = False):
             max = 300000,
             min = 0,
             ),
-        ]        
+        ]
     scenario = reform.new_scenario().init_single_entity(
         axes = axes if bareme else None,
         # menage = menage,
